@@ -21,6 +21,10 @@ int main(int argc, char *argv[]){
   Matrix eigen_vectors;
   Matrix eigen_values;
 
+  int k_ev;
+
+  k_ev = 50; //testing purposes delete later
+
   //////INPUT////////
   input_ppm.readImagePpm(argv[1], "ppm"); //read in .ppm file to matrix
 
@@ -41,7 +45,14 @@ int main(int argc, char *argv[]){
   //////NORMALIZE EIGEN VECTORS/////////
   eigen_vectors.normalizeCols();
 
-  
+  ////NARROW THE EIGEN SYSTEM TO ONLY KEEP K LARGEST/////
+  eigen_values.narrow(k_ev);
+  eigen_vectors.narrow(k_ev);
+
+  //////TRANSLATE THE NORMALIZED DATA//////
+
+
+
 
 
 
