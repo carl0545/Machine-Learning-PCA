@@ -6,6 +6,7 @@
 */
 
 #include <iostream>
+#include <fstream>
 #include "mat.h"
 
 using namespace std;
@@ -30,17 +31,18 @@ int main(int argc, char *argv[]){
   int k_ev;
 
 
-  k_ev = 50; //testing purposes delete later
-
   //////INPUT////////
-  input_ppm.readImagePpm(argv[1], "ppm"); //read in .ppm file to matrix
+  cin >> k_ev;
+  input_ppm.readImagePpm("", "ppm"); //read in .ppm file to matrix
   mean_i = Matrix(Matrix(input_ppm).meanVec());
   std_i = Matrix(Matrix(input_ppm).stddevVec());
 
+  cout << "size of Pic: " << input_ppm.numRows() << " X " << input_ppm.numCols() << endl;
   //////CENTER MATRIX/////
   center = new Matrix(input_ppm); //creates a copy of input matrix to use for the centered matrix
 
   centerMatrix(input_ppm, &center); //centers the 'center' matrix
+
 
   //////COVARIANCE MATRIX/////
   covariance = Matrix(Matrix(center).cov()); //Computes the covariance matrix
@@ -53,6 +55,7 @@ int main(int argc, char *argv[]){
   //////NORMALIZE EIGEN VECTORS/////////
   eigen_vectors.normalizeCols();
 
+  cout << "size of EigenValues: " << eigen_values.numRows() << " X " << eigen_values.numCols() << endl;
   ////NARROW THE EIGEN SYSTEM TO ONLY KEEP K LARGEST/////
   eigen_values.narrow(k_ev);
   eigen_vectors.narrow(k_ev);
@@ -64,13 +67,15 @@ int main(int argc, char *argv[]){
 
   translated_data = Matrix(center_copy.dot(eigenVec_copy));
 
-
+  cout << "size of Encoded: " << translated_data.numRows() << " X " << translated_data.numCols() << endl;
   //////RECOVER DATA FROM COMPRESSED IMAGE/////
   recovered_data = Matrix(translated_data.dotT(eigen_vectors));
   uncenterMatrix(&recovered_data, mean_i, std_i);
 
   ///////RECOVERED DATA ANALYSIS//////
   difference = (input_ppm.dist2(recovered_data))/(input_ppm.numRows() * input_ppm.numCols());
+
+  cout << "DIST: " << difference;
 
   ////SAVE NEW PPM FILE/////
   recovered_data.writeImagePpm("Z-After.ppm", "output");
