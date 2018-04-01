@@ -29,3 +29,4 @@ $(BIN): $(OBJS) $(BIN).o
 
 clean:
 	/bin/rm -f *.o a.out
+	/bin/rm -f Z-after.ppm
