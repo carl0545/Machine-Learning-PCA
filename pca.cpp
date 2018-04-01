@@ -25,7 +25,10 @@ int main(int argc, char *argv[]){
   Matrix translated_data;
   Matrix recovered_data;
 
+  double difference;
+
   int k_ev;
+
 
   k_ev = 50; //testing purposes delete later
 
@@ -67,7 +70,8 @@ int main(int argc, char *argv[]){
   uncenterMatrix(&recovered_data, mean_i, std_i);
 
   ///////RECOVERED DATA ANALYSIS//////
-
+  difference = (input_ppm.dist2(recovered_data))/(input_ppm.numRows() * input_ppm.numCols());
+  cout << "difference: " << difference;
 }
 
 /*
