@@ -73,7 +73,8 @@ int main(int argc, char *argv[]){
   difference = (input_ppm.dist2(recovered_data))/(input_ppm.numRows() * input_ppm.numCols());
 
   ////SAVE NEW PPM FILE/////
-  recovered_data.writeImagePpm(recovered_data);
+  recovered_data.writeImagePpm("Z-After.ppm", "output");
+
 }
 
 /*
@@ -97,6 +98,9 @@ void centerMatrix(Matrix input, Matrix *center){
 
 }
 
+/*
+*Uncenters the centered matrix using the previous inputs Mean and std
+*/
 void uncenterMatrix(Matrix *recovered, Matrix mean, Matrix std){
   Matrix recov_copy = new Matrix(recovered);
 
