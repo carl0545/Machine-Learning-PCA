@@ -71,7 +71,9 @@ int main(int argc, char *argv[]){
 
   ///////RECOVERED DATA ANALYSIS//////
   difference = (input_ppm.dist2(recovered_data))/(input_ppm.numRows() * input_ppm.numCols());
-  cout << "difference: " << difference;
+
+  ////SAVE NEW PPM FILE/////
+  recovered_data.writeImagePpm(recovered_data);
 }
 
 /*
