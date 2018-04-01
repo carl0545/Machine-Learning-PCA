@@ -3,3 +3,4 @@ samplePpmPgms/*
 *.o
 PCA
 Turnin/*
+*.ppm
