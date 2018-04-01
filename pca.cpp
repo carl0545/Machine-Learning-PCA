@@ -39,7 +39,9 @@ int main(int argc, char *argv[]){
   eigen_values = Matrix(eigen_vectors.eigenSystem()); //Creates the eigenvalues and eigen_vectors
 
   //////NORMALIZE EIGEN VECTORS/////////
+  eigen_vectors.normalizeCols();
 
+  
 
 
 
