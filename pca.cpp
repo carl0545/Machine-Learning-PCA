@@ -11,16 +11,19 @@
 using namespace std;
 
 void centerMatrix(Matrix, Matrix*); //Centers the Matrix
-
+void uncenterMatrix(Matrix*, Matrix, Matrix); //Uncenters the Matrix
 
 int main(int argc, char *argv[]){
   //////DECLARATIONS//////
   Matrix input_ppm; //input .ppm matrix
   Matrix center;
+  Matrix mean_i;
+  Matrix std_i;
   Matrix covariance;
   Matrix eigen_vectors;
   Matrix eigen_values;
   Matrix translated_data;
+  Matrix recovered_data;
 
   int k_ev;
 
@@ -28,7 +31,8 @@ int main(int argc, char *argv[]){
 
   //////INPUT////////
   input_ppm.readImagePpm(argv[1], "ppm"); //read in .ppm file to matrix
-
+  mean_i = Matrix(Matrix(input_ppm).meanVec());
+  std_i = Matrix(Matrix(input_ppm).stddevVec());
 
   //////CENTER MATRIX/////
   center = new Matrix(input_ppm); //creates a copy of input matrix to use for the centered matrix
@@ -54,20 +58,15 @@ int main(int argc, char *argv[]){
   Matrix center_copy = new Matrix(center);
   Matrix eigenVec_copy = new Matrix(eigen_vectors);
 
-  eigenVec_copy.transposeSelf();
 
-  translated_data = Matrix(center_copy.dot(eigen_vectors));
-
-  
+  translated_data = Matrix(center_copy.dot(eigenVec_copy));
 
 
+  //////RECOVER DATA FROM COMPRESSED IMAGE/////
+  recovered_data = Matrix(translated_data.dotT(eigen_vectors));
+  uncenterMatrix(&recovered_data, mean_i, std_i);
 
-
-
-
-
-
-
+  ///////RECOVERED DATA ANALYSIS//////
 
 }
 
@@ -89,5 +88,18 @@ void centerMatrix(Matrix input, Matrix *center){
     }
   }
 
+
+}
+
+void uncenterMatrix(Matrix *recovered, Matrix mean, Matrix std){
+  Matrix recov_copy = new Matrix(recovered);
+
+  for(int r = 0; r < recovered->numRows(); r++){
+    for(int c = 0; c < recovered->numCols(); c++){
+      double redo;
+      redo = ((recov_copy.get(r,c) * std.get(0,c)) + mean.get(0,c));
+      recovered->set(r,c, redo);
+    }
+  }
 
 }
