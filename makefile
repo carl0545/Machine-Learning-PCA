@@ -6,7 +6,7 @@ CFLAGS=$(CPPFLAGS)
 LIBS = -lm
 
 NAME=\
-PCA
+pca
 
 BIN=\
 pca
