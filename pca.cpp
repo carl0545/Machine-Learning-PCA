@@ -18,6 +18,8 @@ int main(int argc, char *argv[]){
   Matrix input_ppm; //input .ppm matrix
   Matrix center;
   Matrix covariance;
+  Matrix eigen_vectors;
+  Matrix eigen_values;
 
   //////INPUT////////
   input_ppm.readImagePpm(argv[1], "ppm"); //read in .ppm file to matrix
@@ -29,11 +31,14 @@ int main(int argc, char *argv[]){
   centerMatrix(input_ppm, &center); //centers the 'center' matrix
 
   //////COVARIANCE MATRIX/////
-  covariance = Matrix(Matrix(center).cov());
+  covariance = Matrix(Matrix(center).cov()); //Computes the covariance matrix
 
   /////COMPUTE EIGENVALUES AND EIGENVECTORS OF M//////
+  eigen_vectors = new Matrix(covariance); //Copies the covariance matrix into eigen_vectors
 
-  
+  eigen_values = Matrix(eigen_vectors.eigenSystem()); //Creates the eigenvalues and eigen_vectors
+
+  //////NORMALIZE EIGEN VECTORS/////////
 
 
 
