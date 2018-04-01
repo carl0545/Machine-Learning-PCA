@@ -20,6 +20,7 @@ int main(int argc, char *argv[]){
   Matrix covariance;
   Matrix eigen_vectors;
   Matrix eigen_values;
+  Matrix translated_data;
 
   int k_ev;
 
@@ -50,6 +51,14 @@ int main(int argc, char *argv[]){
   eigen_vectors.narrow(k_ev);
 
   //////TRANSLATE THE NORMALIZED DATA//////
+  Matrix center_copy = new Matrix(center);
+  Matrix eigenVec_copy = new Matrix(eigen_vectors);
+
+  eigenVec_copy.transposeSelf();
+
+  translated_data = Matrix(center_copy.dot(eigen_vectors));
+
+  
 
 
 
