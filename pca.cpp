@@ -37,7 +37,7 @@ int main(int argc, char *argv[]){
   mean_i = Matrix(Matrix(input_ppm).meanVec());
   std_i = Matrix(Matrix(input_ppm).stddevVec());
 
-  cout << "size of Pic: " << input_ppm.numRows() << " X " << input_ppm.numCols() << endl;
+  cout << "(size of Pic: " << input_ppm.numRows() << " X " << input_ppm.numCols() << ")" << endl;
   //////CENTER MATRIX/////
   center = new Matrix(input_ppm); //creates a copy of input matrix to use for the centered matrix
 
@@ -53,7 +53,7 @@ int main(int argc, char *argv[]){
   eigen_values = Matrix(eigen_vectors.eigenSystem()); //Creates the eigenvalues and eigen_vectors
 
 
-  cout << "size of EigenValues: " << eigen_values.numRows() << " X " << eigen_values.numCols() << endl;
+  cout << "(size of EigenValues: " << eigen_values.numRows() << " X " << eigen_values.numCols() << ")" << endl;
   ////NARROW THE EIGEN SYSTEM TO ONLY KEEP K LARGEST/////
   eigen_values.narrow(k_ev);
   eigen_vectors.shorten(k_ev);
@@ -67,7 +67,7 @@ int main(int argc, char *argv[]){
 
   translated_data = Matrix(center_copy.dot(eigenVec_copy));
 
-  cout << "size of Encoded: " << translated_data.numRows() << " X " << translated_data.numCols() << endl;
+  cout << "(size of Encoded: " << translated_data.numRows() << " X " << translated_data.numCols() << ")" << endl;
   //////RECOVER DATA FROM COMPRESSED IMAGE/////
   recovered_data = Matrix(translated_data.dot(eigen_vectors));
 
@@ -79,7 +79,7 @@ int main(int argc, char *argv[]){
   cout << "DIST: " << difference << endl;;
 
   ////SAVE NEW PPM FILE/////
-  recovered_data.writeImagePpm("Z-After.ppm", "output");
+  recovered_data.writeImagePpm("z-after.ppm", "output");
 
 }
 
