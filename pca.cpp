@@ -52,30 +52,31 @@ int main(int argc, char *argv[]){
 
   eigen_values = Matrix(eigen_vectors.eigenSystem()); //Creates the eigenvalues and eigen_vectors
 
-  //////NORMALIZE EIGEN VECTORS/////////
-  eigen_vectors.normalizeCols();
 
   cout << "size of EigenValues: " << eigen_values.numRows() << " X " << eigen_values.numCols() << endl;
   ////NARROW THE EIGEN SYSTEM TO ONLY KEEP K LARGEST/////
   eigen_values.narrow(k_ev);
-  eigen_vectors.narrow(k_ev);
+  eigen_vectors.shorten(k_ev);
 
   //////TRANSLATE THE NORMALIZED DATA//////
   Matrix center_copy = new Matrix(center);
   Matrix eigenVec_copy = new Matrix(eigen_vectors);
 
 
+  eigenVec_copy.transposeSelf();
+
   translated_data = Matrix(center_copy.dot(eigenVec_copy));
 
   cout << "size of Encoded: " << translated_data.numRows() << " X " << translated_data.numCols() << endl;
   //////RECOVER DATA FROM COMPRESSED IMAGE/////
-  recovered_data = Matrix(translated_data.dotT(eigen_vectors));
+  recovered_data = Matrix(translated_data.dot(eigen_vectors));
+
   uncenterMatrix(&recovered_data, mean_i, std_i);
 
   ///////RECOVERED DATA ANALYSIS//////
   difference = (input_ppm.dist2(recovered_data))/(input_ppm.numRows() * input_ppm.numCols());
 
-  cout << "DIST: " << difference;
+  cout << "DIST: " << difference << endl;;
 
   ////SAVE NEW PPM FILE/////
   recovered_data.writeImagePpm("Z-After.ppm", "output");
